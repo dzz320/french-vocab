@@ -1,0 +1,224 @@
+<view class="page-pad safe-bottom">
+  <!-- ========== 第 1 步：选择导入方式 ========== -->
+  <block wx:if="{{step === 'choose'}}">
+    <view class="card">
+      <view class="section-title">教材信息</view>
+      <view class="field">
+        <view class="field-label">教材名称</view>
+        <input class="input" placeholder="例如：你好！法语 第一册" value="{{title}}" bindinput="onTitle" />
+      </view>
+      <view class="field">
+        <view class="field-label">难度水平</view>
+        <view class="row wrap level-row">
+          <view
+            wx:for="{{levels}}"
+            wx:key="*this"
+            class="level-chip {{level === item ? 'level-chip-active' : ''}}"
+            bindtap="onLevel"
+            data-level="{{item}}"
+          >{{item}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 上传进度（大文件可到 50MB，给出实时百分比） -->
+    <view class="card" wx:if="{{uploading}}">
+      <view class="row between">
+        <view class="strong">正在上传 {{docName}}</view>
+        <view class="tiny muted">{{uploadPercent}}%</view>
+      </view>
+      <view class="progress">
+        <view class="progress-bar" style="width:{{uploadPercent}}%"></view>
+      </view>
+      <view class="tiny faint">上传完成前请保持小程序在前台，不要锁屏或切走</view>
+    </view>
+
+    <!-- 超过上传上限：不上传也能在端上识别文字 -->
+    <view class="card" wx:if="{{oversize}}">
+      <view class="strong">《{{docName}}》（{{docSize}}）</view>
+      <view class="small muted hint-text">
+        超过云端上传上限 {{maxSizeMB}}MB，原件无法存入教材库。读取文字层在本机完成、不需要上传，但需要把整份文件读进手机内存，解析可能较慢或中途失败。
+      </view>
+      <view class="row doc-actions">
+        <button class="btn btn-primary flex-1" bindtap="parseLocalOnly">不上传，直接识别文字</button>
+        <button class="btn btn-ghost flex-1" bindtap="chooseDoc">重新选择</button>
+      </view>
+      <button
+        class="btn btn-ghost btn-block pdf-parse-btn"
+        wx:if="{{isPdf}}"
+        bindtap="convertPdfToImages"
+      >不上传，把 PDF 转成图片识别</button>
+      <view class="tiny faint">识别结果同样会进入校正页；教材库不会保留原件，但生词与日程不受影响</view>
+    </view>
+
+    <!-- PDF/Word 上传成功后的引导 -->
+    <view class="card" wx:if="{{docHint}}">
+      <view class="strong">{{docHeadline}}</view>
+
+      <!-- 正在读取文档文字层 / 正在把 PDF 转成图片 -->
+      <view class="small muted hint-text" wx:if="{{pdfState === 'reading'}}">正在读取文档文字层…</view>
+      <view class="small muted hint-text" wx:elif="{{pdfState === 'converting'}}">{{pdfInfo}}</view>
+
+      <!-- 读到文字层：可直接识别，也可改走图片识别（保留原版式） -->
+      <block wx:elif="{{pdfState === 'ok'}}">
+        <view class="small muted hint-text">{{pdfInfo}}，可直接让 AI 抽取单元与生词。</view>
+        <button class="btn btn-primary btn-block pdf-parse-btn" bindtap="parseDocText">直接识别 {{docKindLabel}} 中的生词</button>
+        <button
+          class="btn btn-ghost btn-block pdf-parse-btn"
+          wx:if="{{isPdf}}"
+          bindtap="convertPdfToImages"
+        >改为把 PDF 转成图片识别</button>
+        <view class="tiny faint" wx:if="{{isPdf}}">转成图片不看文字层，能保住公式、表格和图片的版式，适合文字读出来是乱码或排版复杂时；转换在本机完成、不上传</view>
+        <view class="tiny faint" wx:else>识别结果仍会进入校正页，可逐条增删改后再生成词库</view>
+      </block>
+
+      <!-- 超过建议上限：给出风险，但仍允许尝试 -->
+      <block wx:elif="{{pdfState === 'large'}}">
+        <view class="small muted hint-text">{{pdfInfo}}</view>
+        <button class="btn btn-primary btn-block pdf-parse-btn" bindtap="forceReadDoc">仍要尝试直接识别</button>
+        <button
+          class="btn btn-ghost btn-block pdf-parse-btn"
+          wx:if="{{isPdf}}"
+          bindtap="convertPdfToImages"
+        >改为把 PDF 转成图片识别</button>
+        <view class="tiny faint">读不到时会说明具体原因（扫描版 / 加密等），也可改用下面的截图识别或粘贴文本</view>
+      </block>
+
+      <!-- 扫描版 PDF / 主动转图片：已转成整页图片，交给 AI 识别 -->
+      <block wx:elif="{{pdfState === 'scanned'}}">
+        <view class="small muted hint-text">{{pdfInfo}}</view>
+        <button class="btn btn-primary btn-block pdf-parse-btn" bindtap="parseScannedPages">开始 AI 识别这 {{scannedCount}} 页图片</button>
+        <view class="tiny faint">识别按页进行，页数越多越慢；结果会进入校正页，可逐条增删改后再生成词库</view>
+      </block>
+
+      <!-- 读不到文字层：说明原因 + 替代路径 -->
+      <block wx:else>
+        <view class="small muted hint-text" wx:if="{{pdfInfo}}">{{pdfInfo}}</view>
+        <view class="small muted hint-text" wx:else>请任选一种方式继续抽取生词：</view>
+        <button
+          class="btn btn-ghost btn-block pdf-parse-btn"
+          wx:if="{{isPdf && !imageTried}}"
+          bindtap="convertPdfToImages"
+        >把 PDF 转成图片识别</button>
+      </block>
+
+      <view class="row doc-actions">
+        <button class="btn {{pdfState === 'ok' || pdfState === 'large' ? 'btn-ghost' : 'btn-primary'}} flex-1" bindtap="chooseImage">拍照 / 截图识别</button>
+        <button class="btn btn-ghost flex-1" bindtap="openTextInput">粘贴文本</button>
+      </view>
+    </view>
+
+    <!-- 粘贴文本 -->
+    <view class="card" wx:if="{{showTextInput}}">
+      <view class="section-title">粘贴教材文本</view>
+      <view class="small muted hint-text">可粘贴课文、词表或单元词汇（每行一个词或「单词,释义」）；单次解析上限约 3 万字，超出部分不会解析</view>
+      <textarea
+        class="textarea"
+        value="{{textInput}}"
+        bindinput="onTextInput"
+        maxlength="-1"
+        placeholder="在此粘贴文本…"
+      ></textarea>
+      <button class="btn btn-primary btn-block parse-btn" bindtap="parseText" disabled="{{parsing}}">
+        {{parsing ? '解析中…' : '开始 AI 解析'}}
+      </button>
+    </view>
+
+    <view class="card">
+      <view class="section-title">选择导入方式</view>
+      <view class="mode-item" bindtap="chooseImage">
+        <view class="mode-icon">📷</view>
+        <view class="col flex-1">
+          <view class="strong">拍照 / 相册图片</view>
+          <view class="small muted">AI 识别课本页面，自动抽取单元与生词</view>
+        </view>
+        <view class="go-arrow">›</view>
+      </view>
+      <view class="mode-item" bindtap="chooseDoc">
+        <view class="mode-icon">📄</view>
+        <view class="col flex-1">
+          <view class="strong">PDF / Word 文档</view>
+          <view class="small muted">PDF / Word 自动读取正文并抽取生词；也可把 PDF 整体转成图片识别，保留原版式</view>
+          <view class="tiny faint size-hint">支持 PDF / Word / txt，单文件 ≤ {{maxSizeMB}}MB；超出仍可不上传、直接在手机上转换与识别</view>
+        </view>
+        <view class="go-arrow">›</view>
+      </view>
+      <view class="mode-item" bindtap="openTextInput">
+        <view class="mode-icon">📝</view>
+        <view class="col flex-1">
+          <view class="strong">粘贴 / 输入文本</view>
+          <view class="small muted">粘贴课文或词表，AI 直接解析成单元与生词</view>
+        </view>
+        <view class="go-arrow">›</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ========== 第 2 步：AI 解析中 ========== -->
+  <block wx:elif="{{step === 'parsing'}}">
+    <view class="card state-block">
+      <view class="state-icon"><text class="state-icon-text">🧠</text></view>
+      <view class="state-title">AI 正在解析教材</view>
+      <view class="state-desc">{{progressText}}</view>
+      <view class="small faint">解析完成后你可以逐条校正，再生成词库与日程</view>
+    </view>
+  </block>
+
+  <!-- ========== 第 3 步：人工校正 ========== -->
+  <block wx:elif="{{step === 'review'}}">
+    <view class="card">
+      <view class="row between">
+        <view class="h2">校正解析结果</view>
+        <view class="tag">{{totalWords}} 词</view>
+      </view>
+      <view class="small muted">确认或修改单元与生词后，点击底部按钮生成词库与学习日程</view>
+    </view>
+
+    <view class="card unit-card" wx:for="{{units}}" wx:for-item="unit" wx:for-index="uIndex" wx:key="key">
+      <view class="row between">
+        <view class="tag">单元 {{uIndex + 1}}</view>
+        <view class="tiny accent-text" bindtap="removeUnit" data-uindex="{{uIndex}}">删除单元</view>
+      </view>
+      <input
+        class="input unit-title"
+        value="{{unit.title}}"
+        bindinput="onUnitTitle"
+        data-uindex="{{uIndex}}"
+        placeholder="单元标题，如 Leçon 1 · Bonjour"
+      />
+      <view
+        class="word-row"
+        wx:for="{{unit.words}}"
+        wx:for-item="w"
+        wx:for-index="wIndex"
+        wx:key="key"
+      >
+        <view class="word-check {{w.include ? 'on' : ''}}" bindtap="toggleWord" data-uindex="{{uIndex}}" data-windex="{{wIndex}}"></view>
+        <view class="col flex-1">
+          <view class="row word-inputs">
+            <input class="input word-input" value="{{w.word}}" bindinput="onWordField" data-uindex="{{uIndex}}" data-windex="{{wIndex}}" data-field="word" placeholder="单词" />
+            <input class="input word-input" value="{{w.meaning_zh}}" bindinput="onWordField" data-uindex="{{uIndex}}" data-windex="{{wIndex}}" data-field="meaning_zh" placeholder="释义" />
+          </view>
+          <view class="tiny accent-text" wx:if="{{w.dup}}">与已有生词重复，默认不导入</view>
+        </view>
+        <view class="word-del" bindtap="removeWord" data-uindex="{{uIndex}}" data-windex="{{wIndex}}">×</view>
+      </view>
+      <view class="add-word" bindtap="addWord" data-uindex="{{uIndex}}">＋ 添加生词</view>
+    </view>
+
+    <view class="card add-unit" bindtap="addUnit">＋ 添加单元</view>
+
+    <view class="row save-row">
+      <button class="btn btn-outline flex-1" bindtap="backToChoose">返回重来</button>
+      <button class="btn btn-primary flex-1 {{saving ? 'btn-disabled' : ''}}" bindtap="save">
+        {{saving ? '保存中…' : '生成词库与日程'}}
+      </button>
+    </view>
+  </block>
+
+  <!-- 错误提示 -->
+  <view class="card error-card" wx:if="{{error}}">
+    <view class="accent-text">{{error}}</view>
+    <button class="btn btn-ghost btn-sm error-retry" bindtap="backToChoose">返回</button>
+  </view>
+</view>

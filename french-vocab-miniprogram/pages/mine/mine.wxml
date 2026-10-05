@@ -1,0 +1,98 @@
+<view class="page-pad safe-bottom">
+  <!-- 未登录 -->
+  <view wx:if="{{!signedIn}}" class="card state-block">
+    <view class="state-icon"><text class="state-icon-text">🇫🇷</text></view>
+    <view class="state-title">法语生词本</view>
+    <view class="state-desc">登录后同步你的生词、复习计划与学习日程</view>
+    <button class="btn btn-wechat btn-block btn-lg" bindtap="login">微信一键登录</button>
+    <view class="tiny faint login-error" wx:if="{{error}}">{{error}}</view>
+  </view>
+
+  <block wx:else>
+    <!-- 用户卡片 -->
+    <view class="card user-card">
+      <view class="avatar">{{avatarText}}</view>
+      <view class="col flex-1">
+        <view class="h2">法语学习者</view>
+        <view class="small muted">已连续学习 {{streak}} 天</view>
+      </view>
+      <view class="tag" wx:if="{{planName}}">{{planName}}</view>
+    </view>
+
+    <!-- 学习统计 -->
+    <view class="card">
+      <view class="section-title">学习统计</view>
+      <view class="stat-grid">
+        <view class="stat-cell">
+          <view class="stat-num">{{streak}}</view>
+          <view class="stat-label">连续天数</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num">{{totalCount}}</view>
+          <view class="stat-label">生词总数</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num green-text">{{masteredCount}}</view>
+          <view class="stat-label">已掌握</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num orange-text">{{learningCount}}</view>
+          <view class="stat-label">学习中</view>
+        </view>
+      </view>
+
+      <view class="section-title chart-title">近 7 天学习量</view>
+      <view class="chart" wx:if="{{week.length}}">
+        <view class="chart-bar-item" wx:for="{{week}}" wx:key="date">
+          <view class="chart-count">{{item.count || ''}}</view>
+          <view class="chart-bar" style="height: {{item.height}}%"></view>
+          <view class="chart-label">{{item.label}}</view>
+        </view>
+      </view>
+      <view class="small faint chart-empty" wx:else>最近 7 天还没有学习记录</view>
+    </view>
+
+    <!-- AI 学习建议 -->
+    <view class="card">
+      <view class="row between">
+        <view class="section-title no-margin">AI 学习建议</view>
+        <button class="btn btn-ghost btn-sm {{adviceBusy ? 'btn-disabled' : ''}}" bindtap="genAdvice">
+          {{adviceBusy ? '生成中…' : (advice ? '重新生成' : '✨ 生成')}}
+        </button>
+      </view>
+      <view class="small muted" wx:if="{{adviceBusy && !advice}}">正在根据你的学习数据生成建议…</view>
+      <view class="advice" wx:if="{{advice}}">{{advice}}</view>
+      <view class="small faint" wx:if="{{adviceError}}">{{adviceError}}</view>
+    </view>
+
+    <view class="card">
+      <view class="row between">
+        <view class="section-title no-margin">发音设置</view>
+        <button class="btn btn-ghost btn-sm" bindtap="testAudio">🔊 试听</button>
+      </view>
+
+      <view class="row between set-row">
+        <view class="col flex-1">
+          <view class="strong">卡片自动发音</view>
+          <view class="small muted set-hint">进入新的生词卡片时自动朗读</view>
+        </view>
+        <switch checked="{{autoPlay}}" bindchange="onAutoPlay" color="#2A4C9B" />
+      </view>
+
+      <view class="row between set-row">
+        <view class="col flex-1">
+          <view class="strong">静音键下也发声</view>
+          <view class="small muted set-hint">iPhone 拨到静音时仍能听到发音</view>
+        </view>
+        <switch checked="{{ignoreMute}}" bindchange="onIgnoreMute" color="#2A4C9B" />
+      </view>
+
+      <view class="tiny faint audio-hint">听不到声音时，先点「试听」确认。提示「发音域名未配置」时，需要在小程序后台把用到的域名加入合法域名（request + downloadFile）。</view>
+      <view class="tiny faint audio-hint" wx:if="{{audioStatus}}">{{audioStatus}}</view>
+    </view>
+
+    <button class="btn btn-outline btn-block logout-btn" bindtap="logout">退出登录</button>
+
+    <view class="tiny faint about">法语生词本 · 生词学习 / 间隔重复复习 / 教材学习日程</view>
+  </block>
+</view>

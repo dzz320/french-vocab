@@ -1,0 +1,64 @@
+.hero {
+  background: linear-gradient(150deg, #2a4c9b 0%, #1e3a8a 100%);
+  color: #ffffff;
+}
+.hero .h2 {
+  color: #ffffff;
+}
+.hero .small.muted {
+  color: rgba(255, 255, 255, 0.75);
+}
+.hero .tag {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+.hero-nums {
+  margin-top: 28rpx;
+  align-items: stretch;
+}
+.hero-num {
+  text-align: center;
+}
+.hero-num .stat-num {
+  color: #ffffff;
+  font-size: 62rpx;
+}
+.hero-num .stat-label {
+  color: rgba(255, 255, 255, 0.72);
+}
+.hero-divider {
+  width: 1rpx;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 8rpx 0;
+}
+.hero-actions {
+  margin-top: 34rpx;
+}
+.hero-actions .btn + .btn {
+  margin-left: 18rpx;
+}
+.done-tip {
+  margin-top: 30rpx;
+  padding: 24rpx;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.14);
+  text-align: center;
+  font-size: 28rpx;
+}
+
+.schedule-card {
+  display: block;
+}
+.go-arrow {
+  font-size: 44rpx;
+  color: var(--text-3);
+  line-height: 1;
+  margin-left: 16rpx;
+}
+
+.quick-row {
+  margin-top: 8rpx;
+}
+.quick-row .btn + .btn {
+  margin-left: 18rpx;
+}

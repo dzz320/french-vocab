@@ -1,0 +1,95 @@
+<view class="study-wrap">
+  <!-- 加载 / 错误 -->
+  <view wx:if="{{loading}}" class="state-block"><text class="faint">正在准备学习内容…</text></view>
+  <view wx:elif="{{error}}" class="state-block">
+    <view class="state-title">加载失败</view>
+    <view class="state-desc">{{error}}</view>
+    <button class="btn btn-ghost" bindtap="reload">重试</button>
+  </view>
+
+  <block wx:elif="{{finished}}">
+    <!-- 结算页 -->
+    <view class="card result-card">
+      <view class="state-icon"><text class="state-icon-text">{{summaryEmoji}}</text></view>
+      <view class="state-title">{{finishedTitle}}</view>
+      <view class="state-desc">{{finishedDesc}}</view>
+
+      <view class="stat-grid" wx:if="{{summary.total > 0}}">
+        <view class="stat-cell">
+          <view class="stat-num">{{summary.total}}</view>
+          <view class="stat-label">本轮词数</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num green-text">{{summary.correct}}</view>
+          <view class="stat-label">认识</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num accent-text">{{summary.wrong}}</view>
+          <view class="stat-label">不认识</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num">{{summary.newCount}}</view>
+          <view class="stat-label">其中新词</view>
+        </view>
+      </view>
+
+      <button class="btn btn-primary btn-block" bindtap="goBack">完成</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- 顶部进度 -->
+    <view class="top-bar">
+      <view class="top-close" bindtap="confirmExit">×</view>
+      <view class="col flex-1">
+        <view class="row between top-meta">
+          <text class="tiny mode-label">{{modeLabel}}</text>
+          <text class="tiny faint">{{answered + 1}} / {{total}}</text>
+        </view>
+        <view class="progress study-progress">
+          <view class="progress-bar" style="width: {{percent}}%"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卡片 -->
+    <view class="flashcard {{flipped ? 'flipped' : ''}}" bindtap="flip" wx:if="{{card}}">
+      <view class="kind-tag {{card.kind === 'new' ? '' : 'kind-review'}}">{{card.kind === 'new' ? '新词' : '复习'}}</view>
+      <view class="fc-word">{{card.word}}</view>
+      <view class="fc-phonetic">
+        <text wx:if="{{card.pos}}" class="tag fc-pos">{{card.pos}}</text>
+        <text wx:if="{{card.phonetic}}" class="fc-phonetic-text">{{card.phonetic}}</text>
+        <view
+          class="speak-btn speak-btn-sm speak-btn-inline {{playingKey === 'word' ? 'speaking' : ''}}"
+          catchtap="speakWord"
+        >🔊</view>
+      </view>
+
+      <block wx:if="{{flipped}}">
+        <view class="fc-back">
+          <view class="fc-meaning" wx:if="{{card.meaning_zh}}">{{card.meaning_zh}}</view>
+          <view class="fc-example" wx:if="{{card.example_fr}}" catchtap="speakExample">
+            <view class="row between fc-example-head">
+              <text class="tiny faint">例句 · 点单词查词，点空白朗读</text>
+              <view class="speak-btn speak-btn-sm {{playingKey === 'example' ? 'speaking' : ''}}">🔊</view>
+            </view>
+            <!-- 逐词渲染：单词 catchtap 跳词条（阻止冒泡，不触发整句朗读），标点留在外层 -->
+            <view class="fc-example-fr"><block wx:for="{{exampleParts}}" wx:key="i"><text wx:if="{{item.w}}" class="ex-word" data-word="{{item.t}}" catchtap="onExampleWord">{{item.t}}</text><text wx:else>{{item.t}}</text></block></view>
+            <view class="fc-example-zh" wx:if="{{card.example_zh}}">{{card.example_zh}}</view>
+          </view>
+          <view class="fc-mnemonic" wx:if="{{card.mnemonic}}">💡 {{card.mnemonic}}</view>
+        </view>
+      </block>
+      <view class="fc-hint" wx:else>点击卡片查看释义，点 🔊 听发音</view>
+    </view>
+
+    <!-- 操作 -->
+    <view class="answer-row" wx:if="{{flipped}}">
+      <button class="btn btn-ghost answer-btn" bindtap="answerWrong">😅 不认识</button>
+      <button class="btn btn-primary answer-btn" bindtap="answerRight">😀 认识</button>
+    </view>
+    <view class="answer-row" wx:else>
+      <button class="btn btn-outline answer-btn btn-block" bindtap="flip">显示释义</button>
+    </view>
+  </block>
+</view>

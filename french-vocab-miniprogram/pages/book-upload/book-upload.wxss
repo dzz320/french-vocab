@@ -1,0 +1,96 @@
+.level-row {
+  margin-top: 4rpx;
+}
+.level-chip {
+  padding: 12rpx 32rpx;
+  border-radius: 999rpx;
+  background: #f1f3f8;
+  color: var(--text-2);
+  font-size: 26rpx;
+  margin: 0 16rpx 16rpx 0;
+}
+.level-chip-active {
+  background: var(--brand);
+  color: #ffffff;
+}
+
+.mode-item {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 0;
+}
+.mode-item + .mode-item {
+  border-top: 1rpx solid var(--line);
+}
+.mode-icon {
+  font-size: 44rpx;
+  margin-right: 24rpx;
+}
+.go-arrow {
+  font-size: 40rpx;
+  color: var(--text-3);
+  line-height: 1;
+  margin-left: 16rpx;
+}
+
+.hint-text {
+  margin: 12rpx 0 20rpx;
+}
+.size-hint {
+  margin-top: 6rpx;
+}
+.progress {
+  height: 12rpx;
+  border-radius: 999rpx;
+  background: #eef1f8;
+  overflow: hidden;
+  margin: 20rpx 0 14rpx;
+}
+.progress-bar {
+  height: 100%;
+  border-radius: 999rpx;
+  background: var(--brand);
+  transition: width 0.2s linear;
+}
+.doc-actions {
+  margin-top: 8rpx;
+}
+.pdf-parse-btn {
+  margin: 20rpx 0 12rpx;
+}
+.doc-actions .btn + .btn {
+  margin-left: 18rpx;
+}
+.parse-btn {
+  margin-top: 24rpx;
+}
+
+.unit-card .unit-title {
+  margin-top: 18rpx;
+}
+.word-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 14rpx 0;
+}
+.word-row + .word-row {
+  border-top: 1rpx solid #f2f4f9;
+}
+.add-word {
+  margin-top: 16rpx;
+  color: var(--brand);
+  font-size: 26rpx;
+}
+.add-unit {
+  text-align: center;
+  color: var(--brand);
+}
+.save-row {
+  margin-top: 8rpx;
+}
+.save-row .btn + .btn {
+  margin-left: 18rpx;
+}
+.error-retry {
+  margin-top: 20rpx;
+}

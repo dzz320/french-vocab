@@ -1,0 +1,9 @@
+{
+  "name": "french-vocab-miniprogram",
+  "version": "1.0.0",
+  "private": true,
+  "description": "法语生词学习微信小程序：生词学习、间隔重复复习、教材驱动的学习日程生成",
+  "dependencies": {
+    "@tencent-ai/workbuddy-cloud-sdk": "^0.1.3-dev.c090db7.202610050023"
+  }
+}

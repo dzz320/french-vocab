@@ -1,0 +1,31 @@
+# 依赖（用 npm i 恢复，不随代码走）
+node_modules/
+
+# 测试产生的临时文件
+tests/.tmp/
+
+# TTS 服务的音频缓存（自动生成，删掉会重新合成）
+tts-service/cache/
+__pycache__/
+*.pyc
+
+# Python 虚拟环境
+.venv/
+venv/
+
+# WorkBuddy 应用绑定文件：与具体账号绑定，换人/换机器无意义
+.wbapp_*
+*.privacy.json
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# WorkBuddy 工作区数据（记忆、应用绑定的本地记录），属于本机个人数据
+.workbuddy/
+
+# 交接压缩包：仓库本身就是交接物，不再往里塞一份副本（需要时用打包脚本重新生成）
+*.zip

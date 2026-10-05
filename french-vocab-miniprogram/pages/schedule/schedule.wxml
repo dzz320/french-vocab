@@ -1,0 +1,113 @@
+<view class="page-pad safe-bottom">
+  <view wx:if="{{!signedIn}}" class="card state-block">
+    <view class="state-icon"><text class="state-icon-text">📅</text></view>
+    <view class="state-title">请先登录</view>
+    <view class="state-desc">登录后即可生成专属学习日程</view>
+    <button class="btn btn-wechat btn-block" bindtap="goLogin">微信一键登录</button>
+  </view>
+
+  <block wx:elif="{{loading}}">
+    <view class="card"><view class="loading-dots"><text class="faint">正在生成日程…</text></view></view>
+  </block>
+
+  <block wx:elif="{{error}}">
+    <view class="card state-block">
+      <view class="state-title">生成失败</view>
+      <view class="state-desc">{{error}}</view>
+      <button class="btn btn-ghost" bindtap="refresh">重试</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- 完成预估 -->
+    <view class="card hero">
+      <view class="h2">学习日程</view>
+      <view class="small muted">{{scopeLabel}}</view>
+      <view class="row finish-row" wx:if="{{project.finishDate}}">
+        <view class="flex-1">
+          <view class="finish-date">{{project.finishDateCN}}</view>
+          <view class="stat-label finish-label">预计完成全部新词</view>
+        </view>
+        <view class="finish-meta">
+          <view class="tiny">共 {{project.totalNew}} 个新词</view>
+          <view class="tiny">日均复习 {{project.avgReview}} 词</view>
+        </view>
+      </view>
+      <view class="small finish-empty" wx:else>没有待学的新词，去教材或生词本添加吧</view>
+      <view class="small warn-tip" wx:if="{{project.heavy}}">⚠️ 复习压力偏大（日均 {{project.avgReview}} 词），建议下调每日新词数</view>
+    </view>
+
+    <!-- 参数 -->
+    <view class="card">
+      <view class="section-title">目标设置</view>
+
+      <view class="field">
+        <view class="field-label">针对教材</view>
+        <picker range="{{bookNames}}" value="{{bookIndex}}" bindchange="onBookChange">
+          <view class="input picker-value">{{bookNames[bookIndex] || '请选择'}}</view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <view class="field-label">每日新词：{{form.daily_new}} 个</view>
+        <view class="row stepper">
+          <view class="step-btn" bindtap="decDailyNew">－</view>
+          <slider class="flex-1" min="1" max="60" step="1" value="{{form.daily_new}}" activeColor="#2A4C9B" block-size="20" bindchange="onDailyNew" bindchanging="onDailyNewChanging" />
+          <view class="step-btn" bindtap="incDailyNew">＋</view>
+        </view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">每日复习上限：{{form.daily_review_cap}} 个</view>
+        <slider class="flex-1" min="5" max="200" step="5" value="{{form.daily_review_cap}}" activeColor="#2A4C9B" block-size="20" bindchange="onCap" />
+      </view>
+
+      <view class="field">
+        <view class="field-label">每周学习日</view>
+        <view class="row wrap week-row">
+          <view
+            wx:for="{{weekOptions}}"
+            wx:key="value"
+            class="week-chip {{weekSelected[item.value] ? 'week-chip-on' : ''}}"
+            bindtap="toggleWeek"
+            data-value="{{item.value}}"
+          >{{item.label}}</view>
+        </view>
+      </view>
+
+      <button class="btn btn-primary btn-block {{saving ? 'btn-disabled' : ''}}" bindtap="save">
+        {{saving ? '保存中…' : '保存并重新生成日程'}}
+      </button>
+    </view>
+
+    <!-- 单元里程碑 -->
+    <view class="card" wx:if="{{project.milestones.length}}">
+      <view class="section-title">单元里程碑</view>
+      <view class="ms-item" wx:for="{{project.milestones}}" wx:key="key">
+        <view class="ms-dot {{item.done ? 'ms-dot-done' : ''}}"></view>
+        <view class="col flex-1">
+          <view class="strong">{{item.seq}}. {{item.title}}</view>
+          <view class="small muted" wx:if="{{item.rangeCN}}">{{item.rangeCN}} · {{item.studyDays}} 个学习日 · {{item.newCount}} 词</view>
+          <view class="small faint" wx:else>暂无待学新词</view>
+        </view>
+        <view class="tag tag-green" wx:if="{{item.done}}">已排完</view>
+      </view>
+    </view>
+
+    <!-- 近期日程 -->
+    <view class="card" wx:if="{{recentDays.length}}">
+      <view class="section-title">近期安排</view>
+      <view class="day-row" wx:for="{{recentDays}}" wx:key="date">
+        <view class="day-date">
+          <view class="strong">{{item.dateCN}}</view>
+          <view class="tiny faint">{{item.weekCN}}</view>
+        </view>
+        <view class="col flex-1">
+          <view class="small">{{item.unitTitle}}</view>
+          <view class="tiny faint">新词 {{item.newCount}} · 复习 {{item.reviewCount}}</view>
+        </view>
+        <view class="tag" wx:if="{{item.isToday}}">今天</view>
+      </view>
+    </view>
+  </block>
+</view>

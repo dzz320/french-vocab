@@ -1,0 +1,97 @@
+<view class="page-pad safe-bottom">
+  <!-- 未登录 -->
+  <view wx:if="{{!signedIn}}" class="card state-block">
+    <view class="state-icon"><text class="state-icon-text">🇫🇷</text></view>
+    <view class="state-title">欢迎来到法语生词本</view>
+    <view class="state-desc">登录后即可开始生词学习、复习与教材学习日程</view>
+    <button class="btn btn-wechat btn-block" bindtap="goLogin">微信一键登录</button>
+  </view>
+
+  <!-- 加载 -->
+  <block wx:elif="{{loading}}">
+    <view class="card"><view class="loading-dots"><text class="faint">正在加载今日任务…</text></view></view>
+  </block>
+
+  <!-- 错误 -->
+  <block wx:elif="{{error}}">
+    <view class="card state-block">
+      <view class="state-title">加载失败</view>
+      <view class="state-desc">{{error}}</view>
+      <button class="btn btn-ghost" bindtap="refresh">重试</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- 今日任务 -->
+    <view class="card hero">
+      <view class="row between">
+        <view class="h2">今日任务</view>
+        <view class="tag" wx:if="{{totalUnits}}">第 {{unitIndex}} / {{totalUnits}} 单元</view>
+      </view>
+      <view class="small muted" wx:if="{{currentUnitTitle}}">{{currentUnitTitle}}</view>
+
+      <view class="row hero-nums">
+        <view class="hero-num flex-1">
+          <view class="stat-num">{{newTodo}}</view>
+          <view class="stat-label">待学新词</view>
+        </view>
+        <view class="hero-divider"></view>
+        <view class="hero-num flex-1">
+          <view class="stat-num accent-text">{{reviewTodo}}</view>
+          <view class="stat-label">待复习</view>
+        </view>
+      </view>
+
+      <block wx:if="{{newTodo === 0 && reviewTodo === 0}}">
+        <view class="done-tip">🎉 今天的任务已完成，明天见！</view>
+      </block>
+      <block wx:else>
+        <view class="row hero-actions">
+          <button class="btn btn-primary flex-1" bindtap="startNew" wx:if="{{newTodo > 0}}">学新词</button>
+          <button class="btn btn-ghost flex-1" bindtap="startReview" wx:if="{{reviewTodo > 0}}">去复习</button>
+          <button class="btn btn-outline flex-1" bindtap="startMixed" wx:if="{{newTodo > 0 && reviewTodo > 0}}">混合</button>
+        </view>
+      </block>
+    </view>
+
+    <!-- 日程概览 -->
+    <view class="card schedule-card" bindtap="goSchedule">
+      <view class="row between">
+        <view class="col flex-1">
+          <view class="strong">学习日程</view>
+          <view class="small muted" wx:if="{{planFinish}}">预计 {{planFinish}} 完成全部新词</view>
+          <view class="small muted" wx:else>还没有生成日程，去设置目标吧</view>
+        </view>
+        <view class="go-arrow">›</view>
+      </view>
+    </view>
+
+    <!-- 学习概览 -->
+    <view class="card">
+      <view class="section-title">学习概览</view>
+      <view class="stat-grid">
+        <view class="stat-cell">
+          <view class="stat-num">{{streak}}</view>
+          <view class="stat-label">连续学习天数</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num">{{totalWords}}</view>
+          <view class="stat-label">生词总数</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num green-text">{{masteredWords}}</view>
+          <view class="stat-label">已掌握</view>
+        </view>
+        <view class="stat-cell">
+          <view class="stat-num orange-text">{{freshCount}}</view>
+          <view class="stat-label">待学新词</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="row quick-row">
+      <button class="btn btn-outline flex-1" bindtap="goBooks">📖 教材</button>
+      <button class="btn btn-outline flex-1" bindtap="goWords">📓 生词本</button>
+    </view>
+  </block>
+</view>

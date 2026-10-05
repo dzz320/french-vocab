@@ -1,0 +1,97 @@
+<view class="page-pad safe-bottom">
+  <view wx:if="{{loading}}" class="card"><view class="loading-dots"><text class="faint">加载中…</text></view></view>
+
+  <block wx:else>
+    <view class="card">
+      <view class="section-title">{{isNew ? '添加生词' : '编辑生词'}}</view>
+      <view class="prefill-note" wx:if="{{prefillNote}}">{{prefillNote}}</view>
+
+      <view class="field">
+        <view class="field-label">法语单词 *</view>
+        <view class="row">
+          <input class="input flex-1" value="{{form.word}}" bindinput="onField" data-field="word" placeholder="例如：bonjour" />
+          <button class="btn btn-ghost btn-sm ai-btn {{aiBusy ? 'btn-disabled' : ''}}" bindtap="aiComplete" disabled="{{aiBusy}}">
+            {{aiBusy ? 'AI…' : 'AI 补全'}}
+          </button>
+        </view>
+      </view>
+
+      <view class="row field-row">
+        <view class="field flex-1">
+          <view class="field-label">音标</view>
+          <input class="input" value="{{form.phonetic}}" bindinput="onField" data-field="phonetic" placeholder="[bɔ̃ʒuʁ]" />
+        </view>
+        <view class="field-gap"></view>
+        <view class="field flex-1">
+          <view class="field-label">词性</view>
+          <input class="input" value="{{form.pos}}" bindinput="onField" data-field="pos" placeholder="n.m. / v. / adj." />
+        </view>
+      </view>
+
+      <!-- 发音：读的是输入框里的现值，不用先保存 -->
+      <view class="speak-bar">
+        <view
+          class="speak-pill {{form.word ? '' : 'speak-pill-off'}} {{playingKey === 'word' ? 'speaking' : ''}}"
+          bindtap="speakWord"
+        >🔊 读单词</view>
+        <view
+          class="speak-pill {{form.example_fr ? '' : 'speak-pill-off'}} {{playingKey === 'example' ? 'speaking' : ''}}"
+          bindtap="speakExample"
+        >🔊 读例句</view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">中文释义</view>
+        <input class="input" value="{{form.meaning_zh}}" bindinput="onField" data-field="meaning_zh" placeholder="你好" />
+      </view>
+
+      <view class="field">
+        <view class="field-label">所属词库</view>
+        <picker range="{{libraryOptions}}" value="{{libraryPick}}" bindchange="onLibrary">
+          <view class="input picker-value {{libraryPick > 0 ? '' : 'picker-value-off'}}">{{libraryLabel}}</view>
+        </picker>
+      </view>
+
+      <view class="divider"></view>
+
+      <view class="row between">
+        <view class="field-label no-margin">例句与记忆技巧</view>
+        <view class="tiny {{aiExampleBusy ? 'faint' : 'brand-text'}}" bindtap="aiExample">
+          {{aiExampleBusy ? 'AI 生成中…' : '✨ AI 生成例句'}}
+        </view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">法语例句</view>
+        <textarea class="textarea short" value="{{form.example_fr}}" bindinput="onField" data-field="example_fr" placeholder="Bonjour, comment allez-vous ?"></textarea>
+      </view>
+      <view class="field">
+        <view class="field-label">例句翻译</view>
+        <input class="input" value="{{form.example_zh}}" bindinput="onField" data-field="example_zh" placeholder="你好，你好吗？" />
+      </view>
+      <view class="field">
+        <view class="field-label">记忆技巧</view>
+        <textarea class="textarea short" value="{{form.mnemonic}}" bindinput="onField" data-field="mnemonic" placeholder="联想 / 谐音 / 词源记忆"></textarea>
+      </view>
+    </view>
+
+    <view class="card srs-card" wx:if="{{!isNew}}">
+      <view class="row between">
+        <view class="col">
+          <view class="strong">{{stageLabel}}</view>
+          <view class="small muted" wx:if="{{dueText}}">下次复习：{{dueText}}</view>
+          <view class="small muted" wx:else>尚未排入复习计划</view>
+        </view>
+        <view class="tiny brand-text" bindtap="resetSrs">重置 SRS</view>
+      </view>
+    </view>
+
+    <button class="btn btn-primary btn-block btn-lg {{saving ? 'btn-disabled' : ''}}" bindtap="save">
+      {{saving ? '保存中…' : '保存'}}
+    </button>
+
+    <view class="card danger-card" wx:if="{{!isNew}}">
+      <button class="btn btn-danger btn-block" bindtap="confirmDelete">删除这个生词</button>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,16 @@
+.upload-btn {
+  margin-top: 8rpx;
+}
+.tip-line {
+  text-align: center;
+  margin: 16rpx 0 28rpx;
+}
+.book-card {
+  display: block;
+}
+.book-progress {
+  margin-top: 22rpx;
+}
+.book-stats {
+  margin-top: 12rpx;
+}

@@ -1,0 +1,28 @@
+.head-progress {
+  margin-top: 26rpx;
+}
+.head-stats {
+  margin-top: 12rpx;
+}
+.action-row {
+  margin-bottom: 18rpx;
+}
+.action-row .btn + .btn {
+  margin-left: 18rpx;
+}
+.unit-head {
+  margin-top: 16rpx;
+}
+.unit-item .unit-progress {
+  margin-top: 20rpx;
+}
+.unit-stats {
+  margin-top: 12rpx;
+}
+.danger-zone {
+  margin-top: 32rpx;
+}
+.danger-hint {
+  text-align: center;
+  margin-top: 14rpx;
+}

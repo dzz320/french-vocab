@@ -1,0 +1,65 @@
+<view class="page-pad safe-bottom" wx:if="{{!loading}}">
+  <block wx:if="{{book}}">
+    <view class="card head">
+      <view class="row between">
+        <view class="col flex-1">
+          <view class="h1">{{book.title}}</view>
+          <view class="small muted">{{book.level}} · {{sourceLabel}} · {{units.length}} 个单元</view>
+        </view>
+      </view>
+      <view class="progress head-progress">
+        <view class="progress-bar" style="width: {{percent}}%"></view>
+      </view>
+      <view class="row between head-stats">
+        <view class="tiny faint">共 {{stats.total}} 词</view>
+        <view class="tiny faint">已掌握 {{stats.mastered}}</view>
+        <view class="tiny faint">待学 {{stats.fresh}}</view>
+      </view>
+    </view>
+
+    <view class="row action-row">
+      <button class="btn btn-primary flex-1" bindtap="goSchedule">生成 / 查看学习日程</button>
+    </view>
+    <view class="row action-row" wx:if="{{book.source_path}}">
+      <button class="btn btn-outline flex-1" bindtap="copySource">复制教材原件链接</button>
+    </view>
+
+    <view class="section-title unit-head">单元列表</view>
+
+    <view wx:if="{{units.length === 0}}" class="card state-block">
+      <view class="state-title">暂无单元</view>
+      <view class="state-desc">重新上传或在此教材中添加生词即可</view>
+    </view>
+
+    <view class="card unit-item" wx:for="{{units}}" wx:key="id">
+      <view class="row between">
+        <view class="col flex-1">
+          <view class="strong">第 {{item.seq}} 单元 · {{item.title}}</view>
+          <view class="small muted" wx:if="{{item.summary}}">{{item.summary}}</view>
+        </view>
+        <view class="tag tag-green" wx:if="{{item.total > 0 && item.fresh === 0}}">已学完</view>
+        <view class="tag" wx:else>{{item.fresh}} 待学</view>
+      </view>
+      <view class="progress unit-progress">
+        <view class="progress-bar" style="width: {{item.percent}}%"></view>
+      </view>
+      <view class="row between unit-stats">
+        <view class="tiny faint">{{item.total}} 词</view>
+        <view class="tiny faint">掌握 {{item.mastered}}</view>
+        <view class="tiny brand-text" bindtap="learnUnit" data-id="{{item.id}}">学本单元 ›</view>
+      </view>
+    </view>
+
+    <view class="card danger-zone">
+      <button class="btn btn-danger btn-block" bindtap="confirmDelete">删除这本教材</button>
+      <view class="tiny faint danger-hint">会同时删除该教材下的单元与生词，不可恢复</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="card state-block">
+      <view class="state-title">教材不存在或已被删除</view>
+      <button class="btn btn-ghost" bindtap="goBack">返回</button>
+    </view>
+  </block>
+</view>

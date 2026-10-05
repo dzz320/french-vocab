@@ -1,0 +1,186 @@
+<view class="page-pad safe-bottom">
+  <!-- 目标词库：两步共用。改目标会立刻换去重基准 -->
+  <view class="card">
+    <view class="row between">
+      <view class="section-title lib-title">导入到词库</view>
+      <view class="tiny faint" wx:if="{{!loadingLibs}}">共 {{libraries.length}} 个</view>
+    </view>
+
+    <scroll-view scroll-x class="chip-scroll" wx:if="{{libraries.length}}">
+      <view class="chip-row">
+        <view
+          wx:for="{{libraries}}"
+          wx:key="id"
+          class="filter-chip {{targetLibraryId === item.id ? 'on' : ''}}"
+          bindtap="pickLibrary"
+          data-id="{{item.id}}"
+        >{{item.name}}<text wx:if="{{item.total}}" class="chip-count"> {{item.total}}</text></view>
+      </view>
+    </scroll-view>
+
+    <view class="row wrap new-lib-pick">
+      <view
+        class="filter-chip {{targetLibraryId === 0 ? 'on' : ''}} filter-chip-dashed"
+        bindtap="pickLibrary"
+        data-id="0"
+      >＋ 新建词库</view>
+    </view>
+
+    <block wx:if="{{targetLibraryId === 0}}">
+      <input
+        class="input new-lib-name"
+        placeholder="词库名称，例如：B1 库 / 工程师库"
+        value="{{newLibraryName}}"
+        bindinput="onNewLibraryName"
+        maxlength="30"
+      />
+      <view class="field-label lib-level-label">难度（可不选）</view>
+      <view class="row wrap">
+        <view class="filter-chip {{newLibraryLevel === '' ? 'on' : ''}}" bindtap="pickLevel" data-level="">不限</view>
+        <view
+          wx:for="{{levels}}"
+          wx:key="*this"
+          class="filter-chip {{newLibraryLevel === item ? 'on' : ''}}"
+          bindtap="pickLevel"
+          data-level="{{item}}"
+        >{{item}}</view>
+      </view>
+      <view class="tiny faint lib-tip">词库独立于教材，可随时在生词本里改名或删除</view>
+    </block>
+    <view class="tiny faint lib-tip" wx:elif="{{ungroupedTotal}}">词库之间互不影响；未归入词库的生词有 {{ungroupedTotal}} 个</view>
+  </view>
+
+  <!-- ========== 第 1 步：选择来源 ========== -->
+  <block wx:if="{{step === 'pick'}}">
+    <view class="card">
+      <view class="section-title">从 CSV / Excel 导入</view>
+      <view class="small muted hint">
+        「单词 / 释义 / 音标 / 词性 / 例句」这些列名会自动识别，识别不准可以在下一步手动指定。
+      </view>
+      <button class="btn btn-primary btn-block {{parsing ? 'btn-disabled' : ''}}" bindtap="chooseSheet">
+        {{parsing ? '解析中…' : '选择 CSV / Excel 文件'}}
+      </button>
+      <view class="tiny faint size-note">单文件 ≤ {{sheetMaxMB}}MB，一次最多 2000 个词；文件只在本机解析，不会上传</view>
+      <view class="tiny faint size-note">选区里请从「聊天记录」挑文件。.xls 是旧版格式，请先在 Excel 另存为 .xlsx</view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">或粘贴文本</view>
+      <view class="small muted hint">每行一个词，支持「单词,释义」；直接把 Excel 里两列复制过来也可以（Tab 分隔）</view>
+      <textarea
+        class="textarea import-area"
+        value="{{textInput}}"
+        bindinput="onTextInput"
+        maxlength="-1"
+        placeholder="bonjour,你好&#10;merci,谢谢&#10;livre"
+      ></textarea>
+      <button class="btn btn-ghost btn-block {{parsing ? 'btn-disabled' : ''}}" bindtap="parseTextInput">
+        {{parsing ? '解析中…' : '解析预览'}}
+      </button>
+    </view>
+  </block>
+
+  <!-- ========== 第 2 步：确认列与预览 ========== -->
+  <block wx:else>
+    <view class="card">
+      <view class="row between">
+        <view class="col flex-1">
+          <view class="strong ellipsis">{{fileName}}</view>
+          <view class="small muted" wx:if="{{fileSize}}">{{fileSize}} · 识别到 {{totalColumns}} 列</view>
+          <view class="small muted" wx:else>识别到 {{totalColumns}} 列</view>
+        </view>
+        <view class="tag">{{totalParsed}} 个词</view>
+      </view>
+      <view class="warn-box" wx:for="{{warnings}}" wx:key="*this">{{item}}</view>
+      <view class="tiny faint note-line" wx:if="{{titleRow}}">已跳过首行标题「{{titleRow}}」</view>
+      <view class="tiny faint note-line" wx:if="{{truncated}}">文件较长，本次只读取前 2000 个词</view>
+      <view class="tiny faint note-line" wx:if="{{skipped}}">另有 {{skipped}} 行没有单词，已跳过</view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">列对应关系</view>
+      <view class="map-row">
+        <view class="map-label">首行是表头</view>
+        <switch checked="{{hasHeader}}" bindchange="onToggleHeader" color="#2A4C9B" />
+      </view>
+      <view class="map-row" wx:for="{{mappingFields}}" wx:key="key">
+        <view class="map-label">
+          {{item.label}}<text class="map-req" wx:if="{{item.required}}"> *</text>
+        </view>
+        <picker
+          mode="selector"
+          range="{{columnOptions}}"
+          value="{{pickIndex[item.key]}}"
+          data-field="{{item.key}}"
+          bindchange="onMapping"
+        >
+          <view class="map-value {{mappingLabel[item.key] === '不导入' ? 'map-value-off' : ''}}">{{mappingLabel[item.key]}}</view>
+        </picker>
+      </view>
+      <view class="raw-preview" wx:if="{{rawPreview.length}}">
+        <view class="tiny faint">原始数据前几行：</view>
+        <view class="raw-line tiny" wx:for="{{rawPreview}}" wx:key="*this">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="row between">
+        <view class="h2">确认导入</view>
+        <view class="tag">{{importCount}} 个新词</view>
+      </view>
+      <view class="small muted" wx:if="{{dupCount}}">另有 {{dupCount}} 个词已在这个词库里，默认跳过</view>
+      <view class="small muted" wx:elif="{{!totalParsed}}">没有解析到可导入的词</view>
+      <view class="small muted" wx:if="{{elsewhereCount}}">其中 {{elsewhereCount}} 个词在你的其他词库或教材里出现过，可以照常导入</view>
+      <view class="row between bulk-row" wx:if="{{missingMeaning}}">
+        <view class="tiny faint">{{missingMeaning}} 个词还没有释义</view>
+        <view class="tiny brand-text" bindtap="aiBulk">
+          {{aiBulkBusy ? '补全中 ' + aiBulkDone + '/' + aiBulkTotal : 'AI 补全前 ' + aiBulkLimit + ' 条'}}
+        </view>
+      </view>
+    </view>
+
+    <view class="card preview-card" wx:for="{{previewRows}}" wx:for-index="i" wx:key="key">
+      <view class="row">
+        <view class="word-check {{item.include ? 'on' : ''}}" bindtap="toggleInclude" data-i="{{i}}"></view>
+        <view class="col flex-1">
+          <view class="row word-inputs">
+            <input class="input word-input" value="{{item.word}}" bindinput="onRowField" data-i="{{i}}" data-field="word" placeholder="单词" />
+            <input class="input word-input" value="{{item.meaning_zh}}" bindinput="onRowField" data-i="{{i}}" data-field="meaning_zh" placeholder="释义" />
+          </view>
+          <view class="row wrap meta-row">
+            <text class="tiny accent-text" wx:if="{{item.dup}}">已在该词库中，跳过</text>
+            <text class="tiny faint" wx:elif="{{item.elsewhere}}">其他词库/教材里已有这个词</text>
+            <text class="tiny brand-text" wx:if="{{!item.meaning_zh && !item.dup}}" bindtap="aiFill" data-i="{{i}}">
+              {{aiBusyKey === item.key ? '补全中…' : 'AI 补全'}}
+            </text>
+          </view>
+        </view>
+        <view class="word-del" bindtap="removeRow" data-i="{{i}}">×</view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{hiddenCount}}">
+      <view class="small muted">还有 {{hiddenCount}} 个词没有进预览（最多预览 {{previewLimit}} 条），保存时会一并导入。</view>
+    </view>
+
+    <view class="card error-card" wx:if="{{error}}">
+      <view class="accent-text">{{error}}</view>
+    </view>
+
+    <view class="row save-row">
+      <button class="btn btn-outline flex-1" bindtap="back">返回改来源</button>
+      <button
+        class="btn btn-primary flex-1 {{saving || !importCount ? 'btn-disabled' : ''}}"
+        bindtap="save"
+      >{{saving ? '导入中…' : '导入 ' + importCount + ' 个词'}}</button>
+    </view>
+  </block>
+
+  <view class="card error-card" wx:if="{{step === 'pick' && error}}">
+    <view class="accent-text">{{error}}</view>
+  </view>
+
+  <view class="card" wx:if="{{step === 'pick'}}">
+    <view class="tiny faint">同一个词可以在多个词库里各存一份（B1 库和工程师库互不影响）；在同一个词库里重复导入同一份词表，重复的词会被自动跳过。</view>
+  </view>
+</view>

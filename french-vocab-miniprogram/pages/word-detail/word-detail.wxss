@@ -1,0 +1,32 @@
+.field-row {
+  align-items: flex-start;
+}
+.field-gap {
+  width: 20rpx;
+}
+.no-margin {
+  margin-bottom: 12rpx;
+}
+.ai-btn {
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+.textarea.short {
+  min-height: 130rpx;
+}
+.srs-card {
+  display: block;
+}
+.danger-card {
+  margin-top: 20rpx;
+}
+/* 从例句点进来、库里没有该词时的说明 */
+.prefill-note {
+  margin: -6rpx 0 22rpx;
+  padding: 14rpx 18rpx;
+  background: var(--brand-soft);
+  border-radius: var(--radius-sm);
+  color: var(--brand-strong);
+  font-size: 24rpx;
+  line-height: 1.5;
+}

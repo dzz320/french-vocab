@@ -1,0 +1,14 @@
+# 统一换行符：仓库内一律存 LF。
+# 否则 Windows（core.autocrlf=true）与 macOS/Linux 之间来回拉取会出现「整文件 diff」。
+* text=auto eol=lf
+
+# 二进制文件明确标注，禁止换行符转换
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.zip  binary
+*.ttf  binary
+*.woff binary
+*.woff2 binary

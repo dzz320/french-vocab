@@ -1,0 +1,169 @@
+page {
+  background: #f4f6fb;
+}
+.study-wrap {
+  padding: 24rpx 28rpx 48rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 26rpx;
+}
+.top-close {
+  font-size: 46rpx;
+  color: var(--text-3);
+  line-height: 1;
+  padding: 8rpx 24rpx 8rpx 0;
+}
+.top-meta {
+  margin-bottom: 10rpx;
+}
+.mode-label {
+  color: var(--brand);
+}
+.study-progress {
+  height: 12rpx;
+}
+
+.flashcard {
+  background: #ffffff;
+  border-radius: 36rpx;
+  padding: 60rpx 40rpx;
+  box-shadow: 0 10rpx 40rpx rgba(42, 76, 155, 0.12);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  min-height: 620rpx;
+  transition: transform 0.25s ease;
+}
+.flashcard.flipped {
+  transform: scale(1.01);
+}
+.kind-tag {
+  position: absolute;
+  top: 26rpx;
+  right: 26rpx;
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.kind-review {
+  background: var(--orange-soft);
+  color: var(--orange);
+}
+.fc-word {
+  font-size: 68rpx;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+  word-break: break-word;
+}
+.fc-phonetic {
+  margin-top: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fc-pos {
+  margin-right: 12rpx;
+}
+.fc-phonetic-text {
+  color: var(--text-3);
+  font-size: 28rpx;
+}
+.fc-hint {
+  position: absolute;
+  bottom: 34rpx;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 24rpx;
+}
+.fc-back {
+  width: 100%;
+  animation: fade-in 0.25s ease;
+}
+.fc-meaning {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: var(--brand-strong);
+  margin-top: 30rpx;
+}
+.fc-example {
+  margin-top: 30rpx;
+  padding: 24rpx;
+  background: #f6f8fd;
+  border-radius: var(--radius);
+  width: 100%;
+  box-sizing: border-box;
+}
+.fc-example:active {
+  background: #eef2fb;
+}
+.fc-example-head {
+  margin-bottom: 12rpx;
+}
+.fc-example-fr {
+  font-size: 30rpx;
+  color: var(--text);
+  line-height: 1.6;
+}
+/* 例句里可点的单词。用极淡的底色而不是下划线：<text> 是行内元素，
+   底色在小程序里的渲染最稳，同时一眼能看出「这些词能点」。 */
+.ex-word {
+  background: rgba(42, 76, 155, 0.08);
+  border-radius: 6rpx;
+  padding: 0 2rpx;
+}
+.ex-word:active {
+  background: rgba(42, 76, 155, 0.22);
+}
+.fc-example-zh {
+  font-size: 26rpx;
+  color: var(--text-2);
+  margin-top: 8rpx;
+}
+.fc-mnemonic {
+  margin-top: 22rpx;
+  font-size: 26rpx;
+  color: var(--text-2);
+  text-align: left;
+  line-height: 1.6;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.answer-row {
+  display: flex;
+  margin-top: 34rpx;
+}
+.answer-btn {
+  flex: 1;
+}
+.answer-btn + .answer-btn {
+  margin-left: 20rpx;
+}
+
+.result-card {
+  margin-top: 40rpx;
+}

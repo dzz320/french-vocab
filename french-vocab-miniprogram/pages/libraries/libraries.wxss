@@ -1,0 +1,30 @@
+.level-label {
+  margin-top: 24rpx;
+}
+.create-btn {
+  margin-top: 26rpx;
+}
+.lib-name-row {
+  align-items: center;
+}
+.lib-level {
+  margin-left: 14rpx;
+}
+.lib-open {
+  padding-left: 20rpx;
+}
+.lib-progress {
+  margin: 20rpx 0 6rpx;
+}
+.lib-actions {
+  margin-top: 14rpx;
+}
+.rename-block {
+  margin-top: 20rpx;
+}
+.rename-btns {
+  margin-top: 18rpx;
+}
+.rename-btns .btn + .btn {
+  margin-left: 18rpx;
+}

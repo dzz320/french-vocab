@@ -1,0 +1,39 @@
+.search-row {
+  margin-bottom: 20rpx;
+}
+.search-input {
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+.add-btn {
+  margin-left: 18rpx;
+  flex-shrink: 0;
+}
+.lib-bar {
+  margin-bottom: 14rpx;
+}
+.filter-row {
+  margin-bottom: 22rpx;
+}
+.import-btn {
+  flex-shrink: 0;
+}
+/* 行尾多了喇叭按钮后，词名要能真正被压窄，否则长词会把状态胶囊挤出去 */
+.word-fr {
+  flex: 1;
+  min-width: 0;
+}
+.sample-link {
+  margin-top: 22rpx;
+}
+.flag-mastered {
+  background: var(--green);
+}
+.empty-actions .btn + .btn {
+  margin-left: 18rpx;
+  width: 100%;
+}
+.load-more {
+  text-align: center;
+  padding: 20rpx 0 10rpx;
+}

@@ -1,0 +1,99 @@
+<view class="page-pad safe-bottom">
+  <view wx:if="{{!signedIn}}" class="card state-block">
+    <view class="state-icon"><text class="state-icon-text">🗂</text></view>
+    <view class="state-title">请先登录</view>
+    <view class="state-desc">登录后即可管理你的生词库</view>
+    <button class="btn btn-wechat btn-block" bindtap="goLogin">微信一键登录</button>
+  </view>
+
+  <block wx:else>
+    <view class="card">
+      <view class="section-title">新建词库</view>
+      <input
+        class="input"
+        placeholder="名称，例如：B1 库 / 工程师库"
+        value="{{newName}}"
+        bindinput="onNewName"
+        maxlength="30"
+      />
+      <view class="field-label level-label">难度（可不选）</view>
+      <view class="row wrap">
+        <view class="filter-chip {{newLevel === '' ? 'on' : ''}}" bindtap="pickNewLevel" data-level="">不限</view>
+        <view
+          wx:for="{{levels}}"
+          wx:key="*this"
+          class="filter-chip {{newLevel === item ? 'on' : ''}}"
+          bindtap="pickNewLevel"
+          data-level="{{item}}"
+        >{{item}}</view>
+      </view>
+      <button class="btn btn-primary btn-block create-btn {{creating ? 'btn-disabled' : ''}}" bindtap="create">
+        {{creating ? '创建中…' : '新建词库'}}
+      </button>
+      <view class="tiny faint">词库和教材是两套互不影响的分组；CSV / Excel 导入的词都进词库</view>
+    </view>
+
+    <view wx:if="{{loading}}" class="card">
+      <view class="loading-dots"><text class="faint">正在加载词库…</text></view>
+    </view>
+
+    <view wx:elif="{{error}}" class="card state-block">
+      <view class="state-title">加载失败</view>
+      <view class="state-desc">{{error}}</view>
+      <button class="btn btn-ghost" bindtap="refresh">重试</button>
+    </view>
+
+    <block wx:else>
+      <view wx:if="{{libraries.length === 0}}" class="card state-block">
+        <view class="state-icon"><text class="state-icon-text">🗂</text></view>
+        <view class="state-title">还没有词库</view>
+        <view class="state-desc">先新建一个词库，再导入 CSV / Excel 词表</view>
+        <button class="btn btn-ghost" bindtap="goImport">去导入词表</button>
+      </view>
+
+      <view class="card" wx:for="{{libraries}}" wx:key="id">
+        <view class="row between">
+          <view class="col flex-1">
+            <view class="row lib-name-row">
+              <view class="strong ellipsis">{{item.name}}</view>
+              <view class="tag lib-level" wx:if="{{item.level}}">{{item.level}}</view>
+            </view>
+            <view class="small muted">{{item.total}} 词 · 已掌握 {{item.mastered}} · 待学 {{item.fresh}}</view>
+          </view>
+          <view class="tiny brand-text lib-open" bindtap="openLibrary" data-id="{{item.id}}">查看 ›</view>
+        </view>
+        <view class="progress lib-progress">
+          <view class="progress-bar" style="width: {{item.percent}}%"></view>
+        </view>
+
+        <view class="row between lib-actions">
+          <view class="tiny brand-text" bindtap="startRename" data-id="{{item.id}}">重命名</view>
+          <view class="tiny accent-text" bindtap="confirmDelete" data-id="{{item.id}}">删除词库</view>
+        </view>
+
+        <view class="rename-block" wx:if="{{editingId === item.id}}">
+          <input class="input" value="{{editName}}" bindinput="onEditName" maxlength="30" placeholder="新的词库名称" />
+          <view class="row rename-btns">
+            <button class="btn btn-ghost flex-1" bindtap="cancelRename">取消</button>
+            <button class="btn btn-primary flex-1 {{renaming ? 'btn-disabled' : ''}}" bindtap="saveRename" data-id="{{item.id}}">
+              {{renaming ? '保存中…' : '保存'}}
+            </button>
+          </view>
+        </view>
+      </view>
+
+      <view class="card" wx:if="{{ungrouped}}">
+        <view class="small muted">
+          还有 {{ungrouped}} 个生词没有归入任何词库（含教材导入的词）。在生词本里点开单个词，可以改它所属的词库。
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="row between">
+          <view class="small muted">同一个词可以在多个词库里各存一份</view>
+          <view class="tiny brand-text" bindtap="goImport">导入词表 ›</view>
+        </view>
+      </view>
+    </block>
+  </block>
+</view>

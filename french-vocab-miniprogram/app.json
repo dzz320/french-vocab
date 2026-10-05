@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/today/today",
+    "pages/books/books",
+    "pages/words/words",
+    "pages/mine/mine",
+    "pages/book-upload/book-upload",
+    "pages/book-detail/book-detail",
+    "pages/schedule/schedule",
+    "pages/study/study",
+    "pages/word-detail/word-detail",
+    "pages/import/import",
+    "pages/libraries/libraries"
+  ],
+  "networkTimeout": {
+    "request": 60000,
+    "uploadFile": 300000,
+    "downloadFile": 60000
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#2A4C9B",
+    "navigationBarTitleText": "法语生词本",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F4F6FB",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8A93A6",
+    "selectedColor": "#2A4C9B",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/today/today",
+        "text": "今日",
+        "iconPath": "assets/tab/today.png",
+        "selectedIconPath": "assets/tab/today-active.png"
+      },
+      {
+        "pagePath": "pages/books/books",
+        "text": "教材",
+        "iconPath": "assets/tab/books.png",
+        "selectedIconPath": "assets/tab/books-active.png"
+      },
+      {
+        "pagePath": "pages/words/words",
+        "text": "生词本",
+        "iconPath": "assets/tab/words.png",
+        "selectedIconPath": "assets/tab/words-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/tab/mine.png",
+        "selectedIconPath": "assets/tab/mine-active.png"
+      }
+    ]
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

@@ -1,0 +1,717 @@
+{
+ "a-header-4col.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "[bɔ̃ʒuʁ]",
+    "pos": "interj.",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "[mɛʁsi]",
+    "pos": "interj.",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "[livʁ]",
+    "pos": "n.m.",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "[paʁle]",
+    "pos": "v.",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "[mɛzɔ̃]",
+    "pos": "n.f.",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true,
+  "mapping": {
+   "word": 0,
+   "phonetic": 1,
+   "pos": 2,
+   "meaning_zh": 3
+  }
+ },
+ "b-noheader-2col.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": false
+ },
+ "c-semicolon.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "[bɔ̃ʒuʁ]",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "[mɛʁsi]",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "[livʁ]",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "[paʁle]",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "[mɛzɔ̃]",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true
+ },
+ "d-quoted.csv": {
+  "count": 3,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好，用于白天见面",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "dire \"bonjour\"",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说「你好」",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；\n册（量词）",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true
+ },
+ "e-utf8bom.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true
+ },
+ "f-gbk.csv": {
+  "suspicious": true,
+  "reason": "ok"
+ },
+ "g-utf16-tab.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true,
+  "encoding": "utf-16le"
+ },
+ "h-6col.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "[bɔ̃ʒuʁ]",
+    "pos": "interj.",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "Bonjour, Marie !",
+    "example_zh": "你好，玛丽！"
+   },
+   {
+    "word": "merci",
+    "phonetic": "[mɛʁsi]",
+    "pos": "interj.",
+    "meaning_zh": "谢谢",
+    "example_fr": "Merci beaucoup.",
+    "example_zh": "非常感谢。"
+   },
+   {
+    "word": "livre",
+    "phonetic": "[livʁ]",
+    "pos": "n.m.",
+    "meaning_zh": "书；册",
+    "example_fr": "J'ai un livre.",
+    "example_zh": "我有一本书。"
+   },
+   {
+    "word": "parler",
+    "phonetic": "[paʁle]",
+    "pos": "v.",
+    "meaning_zh": "说话；讲",
+    "example_fr": "Je parle français.",
+    "example_zh": "我说法语。"
+   },
+   {
+    "word": "maison",
+    "phonetic": "[mɛzɔ̃]",
+    "pos": "n.f.",
+    "meaning_zh": "房子；家",
+    "example_fr": "Ma maison est grande.",
+    "example_zh": "我的房子很大。"
+   }
+  ],
+  "hasHeader": true,
+  "mapping": {
+   "word": 0,
+   "phonetic": 1,
+   "pos": 2,
+   "meaning_zh": 3,
+   "example_fr": 4,
+   "example_zh": 5
+  }
+ },
+ "i-openpyxl-4col.xlsx": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "[bɔ̃ʒuʁ]",
+    "pos": "interj.",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "[mɛʁsi]",
+    "pos": "interj.",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "[livʁ]",
+    "pos": "n.m.",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "[paʁle]",
+    "pos": "v.",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "[mɛzɔ̃]",
+    "pos": "n.f.",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true,
+  "note": "openpyxl 标准四列"
+ },
+ "j-xlsxwriter-4col.xlsx": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "[bɔ̃ʒuʁ]",
+    "pos": "interj.",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "[mɛʁsi]",
+    "pos": "interj.",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "[livʁ]",
+    "pos": "n.m.",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "[paʁle]",
+    "pos": "v.",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "[mɛzɔ̃]",
+    "pos": "n.f.",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true,
+  "note": "xlsxwriter 标准四列"
+ },
+ "k-messy.xlsx": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true,
+  "skipped": 2
+ },
+ "l-legacy.xls": {
+  "reason": "legacy_xls"
+ },
+ "m-single-column.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ]
+ },
+ "n-empty.csv": {
+  "reason": "empty"
+ },
+ "o-huge.csv": {
+  "count": 2000,
+  "truncated": true
+ },
+ "p-tricky-headers.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": "你好，玛丽！"
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": "非常感谢。"
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": "我有一本书。"
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": "我说法语。"
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": "我的房子很大。"
+   }
+  ],
+  "hasHeader": true
+ },
+ "q-entities.xlsx": {
+  "count": 4,
+  "words": [
+   {
+    "word": "et",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "&amp; 与 <尖括号> 和 \"引号\"",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "l'ami",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "' 撇号 与 & 和 <",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "espace",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "前后有空格",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "emoji",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "çà et là — déjà vu",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true
+ },
+ "r-rich-sparse.xlsx": {
+  "count": 3,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true
+ },
+ "s-title-row.csv": {
+  "count": 5,
+  "words": [
+   {
+    "word": "bonjour",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "你好；早上好",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "merci",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "谢谢",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "livre",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "书；册",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "parler",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "说话；讲",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "maison",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "房子；家",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": true,
+  "titleRow": "法语第一册 · 生词表",
+  "headerRowIndex": 1
+ },
+ "t-title-noheader.csv": {
+  "count": 3,
+  "words": [
+   {
+    "word": "chantier",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "工地",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "béton",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "混凝土",
+    "example_fr": "",
+    "example_zh": ""
+   },
+   {
+    "word": "grue",
+    "phonetic": "",
+    "pos": "",
+    "meaning_zh": "塔吊",
+    "example_fr": "",
+    "example_zh": ""
+   }
+  ],
+  "hasHeader": false,
+  "titleRow": "工程师法语 · 术语",
+  "headerRowIndex": 1
+ }
+}
