@@ -29,3 +29,6 @@ Thumbs.db
 
 # 交接压缩包：仓库本身就是交接物，不再往里塞一份副本（需要时用打包脚本重新生成）
 *.zip
+
+# git bundle（交接用的单文件仓库快照）：同上，可随时用 git bundle create 重新生成
+*.bundle
