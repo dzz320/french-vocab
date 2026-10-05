@@ -36,6 +36,7 @@ db/schema.sql                    云数据库 6 张表的建表语句 + RLS（�
 tests/                           9 套离线回归测试 + fixture + 运行说明
 docs/skills/                     配套的 4 个 AI 技能包（沉淀的工作流，见第 9 节）
 docs/verify/                     PDF 转图链路的验证截图
+.gitignore / .gitattributes      版本控制配置（排除清单 + 换行符统一为 LF）
 ```
 
 `utils/` 各自管什么（改之前先看这里，别重复造）：
@@ -118,7 +119,7 @@ module.exports = {
 | **云数据库 / 登录 / 文件存储** | 应用 `wbapp_j8GTqsa3MpSgMSKYxhWyK1`（我的 WorkBuddy 账号） | 路线 B：自己开云服务 + `db/schema.sql` |
 | **小程序发布** | 我的微信账号。当前 `project.config.json` 里 appid 是 `touristappid`（游客模式） | 去微信公众平台注册自己的小程序拿 AppID；在小程序后台配域名白名单（见下） |
 | **发音服务** | 我账号下的 `https://french-vocab.app.workbuddy.host` | 直接用也行（公开无鉴权）；想独立就照 `tts-service/README.md` 自己部署，回填 `TTS_SERVICE` |
-| **代码** | 本地目录，**原本没有版本控制**（我已补 `.gitignore`） | 见第 5 节 |
+| **代码** | 已初始化 git 仓库（`main` 分支，首版提交 `a34a271`，150 个文件），但**只在本地**、还没推任何远端 | 见第 5 节 |
 | 我本地账号下的数据 | 1 个词库（B1）、1736 个生词、11 条学习日志 | 与你无关，RLS 隔离，你看不到 |
 
 **真机发音必须配域名白名单**，否则会出现「有的词能读、有的不能」（表现为整条主音源挂掉，只剩兜底）：
@@ -131,23 +132,76 @@ module.exports = {
 
 ---
 
-## 5. 怎么改、怎么回传
+## 5. 代码怎么拿、怎么改、怎么回传
 
-**建议一开始就上 git**（现在还不是仓库）。两条路：
+**仓库已经初始化好了**：分支 `main`，首版提交 `a34a271`，150 个文件、32311 行。
+你**不需要**再执行 `git init` —— 拿到之后直接开始改。
+
+### 5.1 先把仓库拿过去（三选一）
+
+**方式 1 · 远端仓库（推荐，改动能来回同步）**
+
+我把本地仓库推到你指定的地址（GitHub / Gitee / 自建都行），你直接 clone：
 
 ```bash
-# A. 各自本地，靠文件互传（最省事）
-git init && git add -A && git commit -m "初始版本"
-# 之后每次改完打包发回来
-
-# B. 建个远端仓库（推荐，改动能来回同步）
-git init && git add -A && git commit -m "初始版本"
-git remote add origin <你的仓库地址>
-git push -u origin main
+git clone <仓库地址> french-vocab && cd french-vocab
 ```
 
-`.gitignore` 已经排除了 `node_modules/`、`tests/.tmp/`、`tts-service/cache/`、`__pycache__/`
-和 WorkBuddy 的应用绑定文件（`.wbapp_*`、`*.privacy.json` —— 与账号绑定，换人无意义）。
+之后照常 `git push` 即可。
+
+**方式 2 · git bundle（单文件，不需要任何远端）**
+
+适合走微信 / 网盘传文件。把**整个提交历史**打包成一个文件：
+
+```bash
+# 我这边生成
+git bundle create french-vocab.bundle --all
+# 你那边还原（得到一个有完整历史的正常仓库）
+git clone -b main french-vocab.bundle french-vocab && cd french-vocab
+```
+
+bundle 里自带全部历史与分支。以后想接远端，再
+`git remote add origin <地址>` + `git push -u origin main` 就行。
+
+**方式 3 · 压缩包（最省事，但会丢掉历史）**
+
+`法语生词本-项目交接-20261005.zip`（0.58MB，已实测自包含：解压到全新路径、无 `node_modules`，
+9 套测试仍全绿）。解压即用，但**只有当前快照、没有提交记录**，只在你完全不关心版本历史时选它。
+
+### 5.2 拿到之后先跑一次基线
+
+```bash
+cd french-vocab-miniprogram
+npm i                    # node_modules 不进仓库，必须自己装
+node ../tests/run-all.cjs   # 期望 9 套 / 1001 条断言全绿
+```
+
+基线是绿的，说明环境没问题，再动代码。
+
+### 5.3 日常提交
+
+```bash
+git add -A && git commit -m "说明改了什么" && git push
+```
+
+**提交作者是你自己**，不是我的：仓库里只存代码，不含任何 `user.name` / `user.email`
+（那些在本地 `.git/config`，不会随仓库传播）。没配过就先跑一次：
+
+```bash
+git config --global user.name "你的名字"
+git config --global user.email "你的邮箱"
+```
+
+别让首版提交 `a34a271` 的作者身份跟着你继续提交下去。
+
+### 5.4 已经排除在版本控制外的东西
+
+`.gitignore` 覆盖：`node_modules/`、`tests/.tmp/`、`tts-service/cache/`、`__pycache__/`、
+WorkBuddy 应用绑定文件（`.wbapp_*`、`*.privacy.json` —— 与账号绑定，换人无意义）、
+`.workbuddy/`（我的项目记忆），以及 `*.zip`（仓库本身就是交接物，不必再塞一份副本）。
+
+`.gitattributes` 把换行符统一为 LF（`* text=auto eol=lf`）——
+所以你在 macOS / Linux 上拉下来**不会**看到「整个文件都被改了」的假 diff。
 
 发布小程序要在**小程序应用面板**里点「分享」走流程（上传 → 提审 → 发布），
 体验版不用等审核、扫码即可用。
