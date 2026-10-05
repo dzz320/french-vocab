@@ -149,19 +149,32 @@ git clone <仓库地址> french-vocab && cd french-vocab
 
 之后照常 `git push` 即可。
 
-**方式 2 · git bundle（单文件，不需要任何远端）**
+**方式 2 · git bundle（单文件，不需要任何远端 —— 本次交付用的就是它）**
 
-适合走微信 / 网盘传文件。把**整个提交历史**打包成一个文件：
+把**整个提交历史**打包成一个文件，适合走微信 / 网盘传：
 
 ```bash
-# 我这边生成
+# 我这边生成（已执行，产物 french-vocab.bundle，约 489KB，含完整历史）
 git bundle create french-vocab.bundle --all
-# 你那边还原（得到一个有完整历史的正常仓库）
-git clone -b main french-vocab.bundle french-vocab && cd french-vocab
+
+# 你那边还原
+git clone -b main french-vocab.bundle french-vocab
+cd french-vocab
 ```
 
-bundle 里自带全部历史与分支。以后想接远端，再
-`git remote add origin <地址>` + `git push -u origin main` 就行。
+还原命令**已实测**：得到 3 个提交、150 个文件、分支 `main`，9 套测试 1001 条断言全绿，
+工作区干净。
+
+> ⚠️ **一个容易踩的点**：从 bundle 克隆出来的仓库，`origin` 会指向**那个 bundle 文件本身**，
+> 所以直接 `git push` 一定失败（bundle 是只读快照）。要接远端就先换掉它：
+>
+> ```bash
+> git remote remove origin
+> git remote add origin <你的远端地址>
+> git push -u origin main
+> ```
+
+bundle 里自带全部历史与分支。想校验完整性：`git bundle verify french-vocab.bundle`。
 
 **方式 3 · 压缩包（最省事，但会丢掉历史）**
 
