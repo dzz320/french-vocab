@@ -154,7 +154,7 @@ git clone <仓库地址> french-vocab && cd french-vocab
 把**整个提交历史**打包成一个文件，适合走微信 / 网盘传：
 
 ```bash
-# 我这边生成（已执行，产物 french-vocab.bundle，约 489KB，含完整历史）
+# 我这边生成（已执行，产物 french-vocab.bundle，约 0.5MB，含完整历史）
 git bundle create french-vocab.bundle --all
 
 # 你那边还原
@@ -162,7 +162,7 @@ git clone -b main french-vocab.bundle french-vocab
 cd french-vocab
 ```
 
-还原命令**已实测**：得到 3 个提交、150 个文件、分支 `main`，9 套测试 1001 条断言全绿，
+还原命令**已实测**：得到完整提交历史、150 个文件、分支 `main`，9 套测试 1001 条断言全绿，
 工作区干净。
 
 > ⚠️ **一个容易踩的点**：从 bundle 克隆出来的仓库，`origin` 会指向**那个 bundle 文件本身**，
